@@ -1,6 +1,4 @@
 # Tkinter_project
-## What it does?
-Run and find out 🙂
 
 ## Dependencies
 ### CustomTkinter 
