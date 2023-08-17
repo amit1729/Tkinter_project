@@ -24,16 +24,7 @@ class SideBar(customtkinter.CTkFrame):
         self.sidebar_button_3.grid(row=3, column=0, padx=20, pady=10)
         self.sidebar_button_4 = customtkinter.CTkButton(self, text='Create Monthly Salary Report', command=self._create_sheet)
         self.sidebar_button_4.grid(row=4, column=0, padx=20, pady=10)
-        # self.appearance_mode_label = customtkinter.CTkLabel(self, text="Appearance Mode:", anchor="w")
-        # self.appearance_mode_label.grid(row=6, column=0, padx=20, pady=(10, 0))
-        # self.appearance_mode_optionemenu = customtkinter.CTkOptionMenu(self, values=["Light", "Dark", "System"],
-        #                                                                command=self.change_appearance_mode_event)
-        # self.appearance_mode_optionemenu.grid(row=7, column=0, padx=20, pady=(10, 10))
-        # self.scaling_label = customtkinter.CTkLabel(self, text="UI Scaling:", anchor="w")
-        # self.scaling_label.grid(row=8, column=0, padx=20, pady=(10, 0))
-        # self.scaling_optionemenu = customtkinter.CTkOptionMenu(self, values=["80%", "90%", "100%", "110%", "120%"],
-        #                                                        command=self.change_scaling_event)
-        # self.scaling_optionemenu.grid(row=9, column=0, padx=20, pady=(10, 20))
+        
     def _new_emp(self):
         self.master.current.destroy()
         self.master.current = NewEmp(self.master)

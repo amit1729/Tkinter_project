@@ -46,7 +46,7 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
         self.index = 0
         today = datetime.date.today()
 
-        self.dateLabel = customtkinter.CTkLabel(self, text="Create the Pay sheet for the month of: ", font=customtkinter.CTkFont(size=17, weight="bold"),anchor = 'w')
+        self.dateLabel = customtkinter.CTkLabel(self, text="Create the pay sheet for the month of: ", font=customtkinter.CTkFont(size=17, weight="bold"),anchor = 'w')
         self.dateLabel.grid(row = 0, column = 0 , columnspan = 6, padx=(20, 20), pady=(20,0), sticky = "ew")
 
         self.monthList = ['January', 'Febuary', 'March', 'April','May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -72,7 +72,7 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
         self.textbox.grid(row=2, column=1, columnspan = 6,padx=(20, 20), pady=(20, 20), sticky="nsew")
         self.textbox.insert('0.0', f'Name: {self.name.get()}\nDate of Birth: {self.dob.get()}\nCO: {self.co.get()}\nRank: {self.rank.get()}\nMobile Number: {self.mobno.get()}')
         self.textbox.configure(state = 'disabled')
-        self.searchButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"), text='Add',height = 80, command=self.addButtonClicked)
+        self.searchButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"),hover_color='green', text='Add',height = 80, command=self.addButtonClicked)
         self.searchButton.grid(row=2, column=8, columnspan = 6, padx=(20, 20), pady=(20, 20), sticky="ew")
 
     def disable(self, widgt):
@@ -118,7 +118,7 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
                 self.ele.insert(END,rec)
                 elements.append(self.ele)
                 self.disable(self.ele)
-        self.deleteButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2,bg_color='red', text_color=("gray10", "#DCE4EE"), text='Remove', command=partial(self.deleteButtonClicked, self.index),font=customtkinter.CTkFont(size=10, weight='bold'))
+        self.deleteButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2,hover_color='red', text_color=("gray10", "#DCE4EE"), text='Remove', command=partial(self.deleteButtonClicked, self.index),font=customtkinter.CTkFont(size=10, weight='bold'))
         self.deleteButton.grid(row=self.index+4, column=13, padx=(5, 5),pady = (5,5), sticky="nsew")
         elements.append(self.deleteButton)
         self.entries.append(elements)
@@ -127,10 +127,3 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
     def deleteButtonClicked(self, i):
         for ele in self.entries[i]:
             ele.destroy()
-
-
-
-        
-
-
-    
