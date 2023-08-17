@@ -8,10 +8,10 @@ class SideBar(customtkinter.CTkFrame):
     def __init__(self,master):
         super().__init__(master)
         self.master = master
-        self.master.current = CreateSheet(self.master)
+        self.master.current = UpdateSalary(self.master)
         self.width=140
         self.corner_radius=0
-        self.grid(row=0, column=0, rowspan=4, sticky="nsew")
+        self.grid(row=0, column=0, rowspan=4, padx=(5, 0), pady=(20,0), sticky="nsew")
         # self.grid_rowconfigure(5, weight=1)
         self.sidebar_button_1 = customtkinter.CTkButton(self, text='Create New Employee Record', command=self._new_emp)
         self.sidebar_button_1.grid(row=1, column=0, padx=20, pady=10)
