@@ -88,5 +88,6 @@ class NewEmp(customtkinter.CTkScrollableFrame):
     def submitButtonClicked(self):
         self.destroy()
         self.master.current = UpdateSalary(self.master, 0)
+        
 
 

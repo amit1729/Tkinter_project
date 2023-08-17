@@ -32,6 +32,8 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         self.da = self._ctsv('20')
         self.tda = self._ctsv('20000')
         self.daontda = self._ctsv('20')
+        self.deductions = self._ctsv('2000')
+        self.hra = self._ctsv('10')
 
         self.nameLabel = customtkinter.CTkLabel(self, text="Name: ", font=customtkinter.CTkFont(size=15, weight="bold"), anchor ='w')
         self.nameLabel.grid(row = 1, column = 2, padx=(20, 20), pady=(20,0), sticky = "ew")
@@ -98,11 +100,21 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         self.daontdaEntry = customtkinter.CTkEntry(self, placeholder_text="10", textvariable=self.daontda)
         self.daontdaEntry.grid(row = 10, column = 3, padx=(20, 20), pady=(20,0), sticky = "ew")
 
+        self.deductionsLabel = customtkinter.CTkLabel(self, text="Deductions: ", font=customtkinter.CTkFont(size=15, weight="bold"),anchor = 'w')
+        self.deductionsLabel.grid(row = 11, column = 2, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.deductionsEntry = customtkinter.CTkEntry(self, placeholder_text="10", textvariable=self.deductions)
+        self.deductionsEntry.grid(row = 11, column = 3, padx=(20, 20), pady=(20,0), sticky = "ew")
+
+        self.hraLabel = customtkinter.CTkLabel(self, text="HRA: ", font=customtkinter.CTkFont(size=15, weight="bold"),anchor = 'w')
+        self.hraLabel.grid(row = 12, column = 2, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.hraEntry = customtkinter.CTkEntry(self, placeholder_text="10", textvariable=self.hra)
+        self.hraEntry.grid(row = 12, column = 3, padx=(20, 20), pady=(20,0), sticky = "ew")
+
         self.nextButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"), text='Next', command=self.nextButtonClicked)
-        self.nextButton.grid(row=11, column=3, padx=(20, 20), pady=(20, 20), sticky="w")
+        self.nextButton.grid(row=13, column=3, padx=(20, 20), pady=(20, 20), sticky="w")
 
         self.clearButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"), text='Clear',command=self.clearButtonClicked)
-        self.clearButton.grid(row=11, column=2, padx=(20, 20), pady=(20, 20), sticky="e")
+        self.clearButton.grid(row=13, column=2, padx=(20, 20), pady=(20, 20), sticky="e")
 
     def nextButtonClicked(self):
         self.nextButton.destroy()
@@ -111,6 +123,8 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         self.daEntry.configure(state = 'disabled')
         self.tdaEntry.configure(state = 'disabled')
         self.daontdaEntry.configure(state = 'disabled')
+        self.deductionsEntry.configure(state = 'disabled')
+        self.hraEntry.configure(state = 'disabled')
         self.submitButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"), text='Submit', command=self.submitButtonClicked)
         self.submitButton.grid(row=11, column=3, padx=(20, 20), pady=(20, 0), sticky="w")
 
@@ -129,6 +143,8 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         self.daEntry.configure(state = 'normal')
         self.tdaEntry.configure(state = 'normal')
         self.daontdaEntry.configure(state = 'normal')
+        self.deductionsEntry.configure(state = 'normal')
+        self.hraEntry.configure(state = 'normal')
         self.nextButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"), text='Next', command=self.nextButtonClicked)
         self.nextButton.grid(row=11, column=3, padx=(20, 20), pady=(20, 20), sticky="w")
 
@@ -141,6 +157,8 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         self.daEntry.delete(0,'end')
         self.tdaEntry.delete(0,'end')
         self.daontdaEntry.delete(0,'end')
+        self.deductionsEntry.delete(0,'end')
+        self.hraEntry.delete(0,'end')
 
     def submitButtonClicked(self):
         self.destroy()
