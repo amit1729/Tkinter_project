@@ -42,7 +42,7 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
         self.deductions = self._ctsv('2000')
         self.hra = self._ctsv('10')
         
-        self.entries = []
+        self.entries = {}
         self.index = 0
         today = datetime.date.today()
 
@@ -121,9 +121,10 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
         self.deleteButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2,hover_color='red', text_color=("gray10", "#DCE4EE"), text='Remove', command=partial(self.deleteButtonClicked, self.index),font=customtkinter.CTkFont(size=10, weight='bold'))
         self.deleteButton.grid(row=self.index+4, column=13, padx=(5, 5),pady = (5,5), sticky="nsew")
         elements.append(self.deleteButton)
-        self.entries.append(elements)
+        self.entries[self.index] = elements
         self.index+=1
 
     def deleteButtonClicked(self, i):
         for ele in self.entries[i]:
             ele.destroy()
+        del self.entries[i]
