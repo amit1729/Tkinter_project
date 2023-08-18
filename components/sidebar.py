@@ -5,10 +5,11 @@ from .updatesal import UpdateSalary
 from .newemployee import NewEmp
 
 class SideBar(customtkinter.CTkFrame):
-    def __init__(self,master):
+    def __init__(self,master, connection):
         super().__init__(master)
         self.master = master
-        self.master.current = CreateSheet(self.master)
+        self.con = connection
+        self.master.current = UpdateSalary(self.master,self.con)
         self.width=140
         self.corner_radius=0
         self.grid(row=0, column=0, rowspan=4, padx=(5, 0), pady=(20,0), sticky="nsew")
@@ -27,16 +28,16 @@ class SideBar(customtkinter.CTkFrame):
         
     def _new_emp(self):
         self.master.current.destroy()
-        self.master.current = NewEmp(self.master)
+        self.master.current = NewEmp(self.master,self.con)
     def _update_salary(self):
         self.master.current.destroy()
-        self.master.current = UpdateSalary(self.master)
+        self.master.current = UpdateSalary(self.master,self.con)
     def _update_personal(self):
         self.master.current.destroy()
-        self.master.current = UpdatePersonal(self.master)
+        self.master.current = UpdatePersonal(self.master,self.con)
     def _create_sheet(self):
         self.master.current.destroy()
-        self.master.current = CreateSheet(self.master)
+        self.master.current = CreateSheet(self.master,self.con)
 
     
  

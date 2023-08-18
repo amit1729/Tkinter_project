@@ -2,8 +2,9 @@ import customtkinter
 from tkinter import *
 
 class UpdatePersonal(customtkinter.CTkScrollableFrame):
-    def __init__(self,master):
+    def __init__(self,master,connection):
         super().__init__(master, label_text='Update Personal Details')
+        self.con = connection
         self.grid(row=0, column=1,rowspan=4, padx=(20, 0), pady=(20,0), sticky="nsew")
         self.grid_columnconfigure((1,2,4), weight = 1)
         self.grid_columnconfigure(3, weight = 2)

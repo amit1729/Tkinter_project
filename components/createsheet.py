@@ -4,8 +4,9 @@ import datetime
 from functools import partial
 
 class CreateSheet(customtkinter.CTkScrollableFrame):
-    def __init__(self,master):
+    def __init__(self,master,connection):
         super().__init__(master, label_text='Create Monthly Salary Report')
+        self.con = connection
         self.grid(row=0, column=1,rowspan=4, padx=(20, 0), pady=(20,0), sticky="nsew")
         
         # self.grid_columnconfigure((1,4,6,8,10,13), weight = 2)
@@ -47,7 +48,7 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
         today = datetime.date.today()
 
         self.dateLabel = customtkinter.CTkLabel(self, text="Create the pay sheet for the month of: ", font=customtkinter.CTkFont(size=17, weight="bold"),anchor = 'w')
-        self.dateLabel.grid(row = 0, column = 0 , columnspan = 6, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.dateLabel.grid(row = 0, column = 1 , columnspan = 7, padx=(20, 20), pady=(20,0), sticky = "ew")
 
         self.monthList = ['January', 'Febuary', 'March', 'April','May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
         self.monthVar = StringVar(value=self.monthList[today.month-1])
@@ -60,7 +61,7 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
         self.yearOptionMenu.grid(row = 0, column = 11 , columnspan = 3, padx=(20, 30), pady=(20,0), sticky = "e")
 
         self.snoEntry = customtkinter.CTkEntry(self, placeholder_text="Serial Number of Employee")
-        self.snoEntry.grid(row = 1, column = 1 , columnspan = 6, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.snoEntry.grid(row = 1, column = 1 , columnspan = 7, padx=(20, 20), pady=(20,0), sticky = "ew")
         self.searchButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"), text='Search Employee', command=self.searchButtonClicked)
         self.searchButton.grid(row=1, column=8, columnspan = 6, padx=(20, 20), pady=(20, 0), sticky="ew")
 
@@ -69,11 +70,13 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
     
     def searchButtonClicked(self):
         self.textbox = customtkinter.CTkTextbox(master=self,height = 100, width = 150)
-        self.textbox.grid(row=2, column=1, columnspan = 6,padx=(20, 20), pady=(20, 20), sticky="nsew")
+        self.textbox.grid(row=2, column=1, columnspan = 7,padx=(20, 20), pady=(20, 20), sticky="nsew")
         self.textbox.insert('0.0', f'Name: {self.name.get()}\nDate of Birth: {self.dob.get()}\nCO: {self.co.get()}\nRank: {self.rank.get()}\nMobile Number: {self.mobno.get()}')
         self.textbox.configure(state = 'disabled')
         self.searchButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"),hover_color='green', text='Add',height = 80, command=self.addButtonClicked)
-        self.searchButton.grid(row=2, column=8, columnspan = 6, padx=(20, 20), pady=(20, 20), sticky="ew")
+        self.searchButton.grid(row=2, column=8, columnspan = 3, padx=(20, 20), pady=(20, 20), sticky="ew")
+        self.exportButton = customtkinter.CTkButton(master=self, border_width=2, text_color=("gray10", "#DCE4EE"), text='Export',height = 80, command=self.exportButtonClicked)
+        self.exportButton.grid(row=2, column=11, columnspan = 3, padx=(20, 20), pady=(20, 20), sticky="ew")
 
     def disable(self, widgt):
         widgt.configure(state = 'disable')
@@ -128,3 +131,6 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
         for ele in self.entries[i]:
             ele.destroy()
         del self.entries[i]
+
+    def exportButtonClicked(self):
+        pass

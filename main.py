@@ -1,33 +1,48 @@
-import tkinter
-import tkinter.messagebox
 import customtkinter
 from components.sidebar import SideBar 
-from components.newemployee import NewEmp
+import sqlite3
+from components.utils import *
 
 customtkinter.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
-customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
-
-# class SideBar(customtkinter.CTkFrame):
-#     def __init__(self,master):
-#         super().__init__(master)
-
-#         self.width=140
-#         self.corner_radius=0
-#         self.grid(row=0, column=0, rowspan=4, sticky="nsew")
-#         # self.grid_rowconfigure(5, weight=1)
-#         self.sidebar_button_1 = customtkinter.CTkButton(self, text='Create New Employee Record')
-#         self.sidebar_button_1.grid(row=1, column=0, padx=20, pady=10)
-#         self.sidebar_button_2 = customtkinter.CTkButton(self, text='Update Salary')
-#         self.sidebar_button_2.grid(row=2, column=0, padx=20, pady=10)
-#         self.sidebar_button_3 = customtkinter.CTkButton(self, text='Update Personal Detalis')
-#         self.sidebar_button_3.grid(row=3, column=0, padx=20, pady=10)
-#         self.sidebar_button_4 = customtkinter.CTkButton(self, text='Create Monthly Salary Report')
-#         self.sidebar_button_4.grid(row=4, column=0, padx=20, pady=10)
+customtkinter.set_default_color_theme("dark-blue")  # Themes: "blue" (standard), "green", "dark-blue"
 
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
-
+        con = sqlite3.connect('records.db')
+        cur = con.cursor()
+        if not table_exists('Personal', con):
+            cur.execute('''
+                    CREATE TABLE Personal (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name varchar(255) NOT NULL,
+                    dob DATE NOT NULL,
+                    co varchar(255) NOT NULL,
+                    rank varchar(255) NOT NULL,
+                    mobno varchar(255) NOT NULL)
+                    ''')
+            con.commit()
+            
+        if not table_exists('Salary', con):
+            cur.execute('''
+                    CREATE TABLE Salary (
+                    id INTEGER,
+                    month varchar(255) NOT NULL,
+                    year int NOT NULL,
+                    basic DOUBLE(10, 2) NOT NULL,
+                    da DOUBLE(3, 2) NOT NULL,
+                    tda DOUBLE(10, 2) NOT NULL,
+                    daonda DOUBLE(3, 2) NOT NULL,
+                    deductions DOUBLE(10, 2) NOT NULL,
+                    hra DOUBLE(3, 2) NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (id) REFERENCES Personal(id) ON DELETE CASCADE
+                    )
+                    ''')
+            con.commit()
+        # print_table_structure('Salary', con)
+        cur.close()
+            
         # configure window
         self.title("Salary Recorder")
         self.geometry(f"{1100}x{580}")
@@ -39,10 +54,9 @@ class App(customtkinter.CTk):
         self.grid_rowconfigure((0, 1, 2), weight=1)
 
         # create sidebar frame with widgets
-        self.sidebar_frame = SideBar(self)
-        # create scrollable frame
-        # self.scrollable_frame = NewEmp(self)
-
+        self.sidebar_frame = SideBar(self,con)
+        
+   
 if __name__ == "__main__":
     app = App()
     app.mainloop()
