@@ -2,7 +2,7 @@ import customtkinter
 from tkinter import *
 from tkinter import messagebox
 import datetime
-from .utils import validAmount, validPercent
+from .utils import validAmount, validPercent, chageFormat
 
 class UpdateSalary(customtkinter.CTkScrollableFrame):
     def __init__(self,master,connection, sno = ''):
@@ -17,10 +17,19 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         self.snoEntry.grid(row = 0, column = 2, padx=(20, 20), pady=(20,0), sticky = "ew")
         self.searchButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"), text='Search Employee', command=self.searchButtonClicked)
         self.searchButton.grid(row=0, column=3, padx=(20, 20), pady=(20, 0), sticky="w")
+        self.snoEntry.bind('<Return>', command=self.enterPressed)
+        # self.bind_all('<MouseWheel>', )
         if self.serialNumber.get()!="":
             self.snoEntry.configure(state="disabled")
             self.searchButton.configure(state="disabled")
             self.searchButtonClicked()
+        
+    # def _on_mousewheel(self, event):
+    #     self.yview_scroll(int(-1*(event.delta/120)), "units")
+    #     self.sc
+
+    def enterPressed(self,event):
+        self.searchButtonClicked()
         
 
     def _ctsv(self,x):
@@ -49,7 +58,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         salData, salExists = self.fetchSalary()
         if exists:
             self.name = self._ctsv(data[1])
-            self.dob = self._ctsv(data[2])
+            self.dob = self._ctsv(chageFormat(data[2], '%Y-%m-%d','%d/%m/%Y' ))
             self.co = self._ctsv(data[3])
             self.rank = self._ctsv(data[4])
             self.mobno = self._ctsv(data[5])
@@ -134,7 +143,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
             self.tdaEntry = customtkinter.CTkEntry(self, placeholder_text="10", textvariable=self.tda)
             self.tdaEntry.grid(row = 9, column = 3, padx=(20, 20), pady=(20,0), sticky = "ew")
 
-            self.daontdaLabel = customtkinter.CTkLabel(self, text="DA on TDA: ", font=customtkinter.CTkFont(size=15, weight="bold"),anchor = 'w')
+            self.daontdaLabel = customtkinter.CTkLabel(self, text="DA on TDA(%): ", font=customtkinter.CTkFont(size=15, weight="bold"),anchor = 'w')
             self.daontdaLabel.grid(row = 10, column = 2, padx=(20, 20), pady=(20,0), sticky = "ew")
             self.daontdaEntry = customtkinter.CTkEntry(self, placeholder_text="10", textvariable=self.daontda)
             self.daontdaEntry.grid(row = 10, column = 3, padx=(20, 20), pady=(20,0), sticky = "ew")
@@ -144,7 +153,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
             self.deductionsEntry = customtkinter.CTkEntry(self, placeholder_text="10", textvariable=self.deductions)
             self.deductionsEntry.grid(row = 11, column = 3, padx=(20, 20), pady=(20,0), sticky = "ew")
 
-            self.hraLabel = customtkinter.CTkLabel(self, text="HRA: ", font=customtkinter.CTkFont(size=15, weight="bold"),anchor = 'w')
+            self.hraLabel = customtkinter.CTkLabel(self, text="HRA(%): ", font=customtkinter.CTkFont(size=15, weight="bold"),anchor = 'w')
             self.hraLabel.grid(row = 12, column = 2, padx=(20, 20), pady=(20,0), sticky = "ew")
             self.hraEntry = customtkinter.CTkEntry(self, placeholder_text="10", textvariable=self.hra)
             self.hraEntry.grid(row = 12, column = 3, padx=(20, 20), pady=(20,0), sticky = "ew")
@@ -272,12 +281,15 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         self.con.commit()    
         cur.close()
         messagebox.showinfo('Successfull', 'Record Updated Successfully')
-        self.basicEntry.focus()
-        self.editButtonClicked()
-        self.clearButtonClicked()
-        
-
-
-
-
-
+        destList = [self.nameLabel, self.nameEntry, self.rankLabel, self.rankEntry,
+                    self.mobnoLabel, self.mobnoEntry, self.coLabel, self.coEntry,
+                    self.dobLabel, self.dobEntry, self.submitButton, self.editButton, self.msgLabel,
+                    self.basicLabel, self.basicEntry, self.daLabel, self.daEntry, self.tdaEntry, self.tdaLabel,
+                    self.daontdaEntry, self.daontdaLabel, self.hraEntry, self.hraLabel, self.deductionsEntry, self.deductionsLabel,
+                    self.dateLabel, self.yearOptionMenu, self.monthOptionMenu
+                    ]
+        for ele in destList:
+            try:
+                ele.destroy()
+            except:
+                pass
