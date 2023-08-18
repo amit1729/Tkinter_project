@@ -3,7 +3,9 @@ from tkinter import *
 import datetime
 from functools import partial
 from .utils import chageFormat
-from tkinter import messagebox
+from tkinter import messagebox, filedialog
+import xlsxwriter
+import os
 
 class CreateSheet(customtkinter.CTkScrollableFrame):
     def __init__(self,master,connection):
@@ -158,9 +160,9 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
             return
         record, exists = self.createRecord()
         if exists:
-            headers = ['S.No', 'Personal Details', 'Basic Pay','HRA(%)', 'HRA', 'DA%', 'DA', 'TDA', 'DA to TDA(%)', 'DA to TDA', 'Deductions', 'Total', 'Action']
+            self.headers = ['S.No', 'Personal Details', 'Basic Pay','HRA(%)', 'HRA', 'DA%', 'DA', 'TDA', 'DA to TDA(%)', 'DA to TDA', 'Deductions', 'Total', 'Action']
             if self.index == 0:
-                for i, header in enumerate(headers):
+                for i, header in enumerate(self.headers):
                     self.ele = customtkinter.CTkEntry(self,corner_radius=0,font=customtkinter.CTkFont(size=11))
                     self.ele.grid(row = self.index+3, column = i+1, sticky = 'snew')
                     self.ele.insert(END, header)
@@ -194,4 +196,43 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
         del self.entryIds[i]
 
     def exportButtonClicked(self):
-        pass
+        file_path = filedialog.asksaveasfilename(
+            defaultextension=".xlsx",
+            filetypes=[("Excel Workbook", "*.xlsx"), ],
+            title="Save As"
+            )
+        if file_path:
+            workbook = xlsxwriter.Workbook(file_path)
+            worksheet = workbook.add_worksheet()
+            worksheet.set_row(1, 20)
+            worksheet.set_row(2, 20)
+            worksheet.merge_range('C2:I3', f'Salary Report for the month of {self.monthOptionMenu.get()} {self.yearOptionMenu.get()}', cell_format=workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter','font_size': 15,'font_name': 'Times New Roman'}))
+            worksheet.set_column('B:B', 30)
+            x = 0
+            header_format = workbook.add_format({'bold': True, 'font_size': 11,'font_name': 'Times New Roman', 'align': 'center', 'valign': 'vcenter'})
+            # Write content with the specified font size
+            colns = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+            for c in range(len(self.headers)-1):
+                if colns[c]!='B':
+                    worksheet.set_column(f'{colns[c]}:{colns[c]}', 15)
+                worksheet.write(colns[c]+str(5), self.headers[c], header_format)
+
+            records = list(map(lambda x: x[1], self.entries.values()))
+            records.sort(key = lambda x: x[0])
+            # print(records)
+            entry_format = workbook.add_format({'bold': False, 'font_size': 11,'font_name': 'Times New Roman', 'text_wrap': True,  'valign': 'vcenter'})
+            for i, record in enumerate(records):
+                worksheet.set_row(i+5, 90)
+                colns = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+                for c in range(len(record)):
+                    if c == 1:
+                        worksheet.write(colns[c]+str(i+6), record[c], entry_format)
+                    elif c==0:
+                        worksheet.write(colns[c]+str(i+6), int(record[c]), entry_format)
+                    else:
+                        worksheet.write(colns[c]+str(i+6), float(record[c]), entry_format)
+            workbook.close()
+            os.system('start '+file_path)
+        else:
+            messagebox.showerror('Error', 'Filename not given')
+
