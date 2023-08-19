@@ -3,6 +3,7 @@ from .createsheet import CreateSheet
 from .updatepersonal import UpdatePersonal
 from .updatesal import UpdateSalary
 from .newemployee import NewEmp
+from .displaysheet import DisplaySheet
 
 class SideBar(customtkinter.CTkFrame):
     def __init__(self,master, connection):
@@ -25,6 +26,8 @@ class SideBar(customtkinter.CTkFrame):
         self.sidebar_button_3.grid(row=3, column=0, padx=20, pady=10)
         self.sidebar_button_4 = customtkinter.CTkButton(self, text='Create Monthly Salary Report', command=self._create_sheet)
         self.sidebar_button_4.grid(row=4, column=0, padx=20, pady=10)
+        self.sidebar_button_5 = customtkinter.CTkButton(self, text='Employee Details', command=self._display_sheet)
+        self.sidebar_button_5.grid(row=5, column=0, padx=20, pady=10)
         
     def _new_emp(self):
         self.master.current.destroy()
@@ -38,6 +41,9 @@ class SideBar(customtkinter.CTkFrame):
     def _create_sheet(self):
         self.master.current.destroy()
         self.master.current = CreateSheet(self.master,self.con)
+    def _display_sheet(self):
+        self.master.current.destroy()
+        self.master.current = DisplaySheet(self.master,self.con)
 
     
  
