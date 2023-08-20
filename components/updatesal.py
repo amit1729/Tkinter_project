@@ -18,7 +18,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         self.searchButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"), text='Search Employee', command=self.searchButtonClicked)
         self.searchButton.grid(row=0, column=3, padx=(20, 20), pady=(20, 0), sticky="w")
         self.snoEntry.bind('<Return>', command=self.enterPressed)
-        # self.bind_all('<MouseWheel>', )
+        self.bind_all('<MouseWheel>', lambda ev: self._mouse_wheel_all(ev))
         if self.serialNumber.get()!="":
             self.snoEntry.configure(state="disabled")
             self.searchButton.configure(state="disabled")

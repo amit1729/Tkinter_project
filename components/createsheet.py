@@ -6,6 +6,7 @@ from .utils import chageFormat
 from tkinter import messagebox, filedialog
 import xlsxwriter
 import os
+# from .tableframe import CustomTable
 
 class CreateSheet(customtkinter.CTkScrollableFrame):
     def __init__(self,master,connection):
@@ -66,7 +67,9 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
         self.searchButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"), text='Search Employee', command=self.searchButtonClicked)
         self.searchButton.grid(row=1, column=8, columnspan = 6, padx=(20, 20), pady=(20, 0), sticky="ew")
         self.snoEntry.bind('<Return>', command=self.enterPressed)
-
+        
+        # self.tableFrame = CustomTable(self,self.con)
+        
     def enterPressed(self,event):
         self.searchButtonClicked()
 
@@ -138,14 +141,31 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
             record = [
                     self.snoEntry.get(),
                     f'Name: {self.name.get()}\nDate of Birth: {self.dob.get()}\nCO: {self.co.get()}\nRank: {self.rank.get()}\nMobile Number: {self.mobno.get()}',
+                    'Details\nHere\nOkay',
                     basicPay,
-                    hra,
-                    self.calPercent(basicPay,hra),
                     da,
                     self.calPercent(basicPay,da),
+                    # hra,
                     tda,
-                    daontda,
-                    self.calPercent(tda,daontda),
+                    # daontda,
+                    self.calPercent(tda,da),
+                    self.calPercent(basicPay,hra),
+                    '0',
+                    '0',
+                    '0',
+                    '0',
+                    '0',
+                    '0',
+                    '0',
+                    '0',
+                    '0',
+                    '0',
+                    '0',
+                    '0',
+                    '0',
+                    '0',
+                    '0',
+                    '0',
                     deductions,
                     str(round(float(basicPay)+float(self.calPercent(basicPay,hra))+float(self.calPercent(basicPay,da))+float(tda)+float(self.calPercent(tda,daontda))-float(deductions), 2))
                     ]
@@ -153,47 +173,112 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
         else:
             messagebox.showerror('Not Found', f'Salary record for Empolyee with serial number {self.snoEntry.get()} for the month of {self.monthOptionMenu.get()} {self.yearOptionMenu.get()} does not exists')
         return None, False
+    
+
+    def buildHeader(self):
+        self.headers = [
+            ('S.No', 0, 0, 4, 1),
+            ('PERSONAL NUMBER\n AND DETAILS OF GOVT SERVANT', 0,1,4,1),
+            ('RANK\n STATION\n DOJ\n DOI',0,2,4,1),
+            ('ALLOWANCES', 0,3,1,11),
+            ('RECOVERY', 0, 14, 1, 13),
+            ('', 0,25,1,1),
+            ('BP', 1,3,3,1),
+            ('DEARNESS\nALLOWANCES',1,4,1,2),
+            ('DA%',2,4,2,1),
+            ('DA',2,5,2,1),
+            ('TRANSPORT\nALLOWANCE',1,6,1,2),
+            ('TPT',2,6,2,1),
+            ('DA ON\nTPT',2,7,2,1),
+            ('HRA',1,8,3,1),
+            ('WASHING\nALLOWANCE',1,9,3,1),
+            ('EXTRA\nCLAIM\n(SMALL\nFAMILY\nNORMS)',1,10,3,1),
+            ('GROSS\nENTITLEME\nNT (EXCEPT\nGMC)',1,11,3,1),
+            ('GMC\n10% OF\n(BP+GP+DA)',1,12,3,1),
+            ('GROSS\nENTITLEMENT',1,13,3,1),
+            ('GMC\n10% OF\n(BP+GP+DA)',1,14,3,1),
+            ('INDL\nCONTRI\n10% OF\n(BP+GP+DA)',1,15,3,1),
+            ('CGHS',1,16,3,1),
+            ('CGEIS',1,17,3,1),
+            ('LICENCE\nFEE MES\nBILLS',1,18,3,1),
+            ('OTHER\nDEDUCTION/\nFESTIVAL\nADVANCE',1,19,3,1),
+            ('INCOME\nTAX\n(PAID)',1,20,3,1),
+            ('ABSENTY/HPL/EOL DEDUCTIONS',1,21,1,4),
+            ('HPL',2,21,1,2),
+            ('EOL',2,23,1,2),
+            ('DAYS',3,21,1,1),
+            ('AMT',3,22,1,1),
+            ('DAYS',3,23,1,1),
+            ('AMT',3,24,1,1),
+            ('TOTAL\nDEDN',1,25,3,1),
+            ('AMOUNT\nPAYABLE',1,26,3,1),
+            ('ACTION', 0, 27,4,1)
+        ]
+        self.height = 150
+        self.tableFrame = customtkinter.CTkScrollableFrame(self,corner_radius=0,orientation='horizontal')
+        self.tableFrame.grid(row=3, column=1,columnspan = 13, pady=(20,0), sticky="nsew")
+        # self.tableFrame.grid_rowconfigure((0,2,3),weight=1)
+        self.tableFrame.grid_rowconfigure(1,weight=5)
+        self.tableFrame.grid_rowconfigure(0,weight=1)
+        self.tableFrame.grid_rowconfigure(2,weight=1)
+        self.tableFrame.grid_rowconfigure(3,weight=1)
+        self.tableFrame.grid_columnconfigure((0,),weight=1)
+        for header in self.headers:
+            self.ele = customtkinter.CTkLabel(master=self.tableFrame,text=header[0], corner_radius=2,font=customtkinter.CTkFont(size=12, weight='bold'),bg_color='#2b2b2b',padx  = 15)
+            self.ele.grid(row=header[1], column=header[2],rowspan = header[3], columnspan = header[4] ,padx=(1,1), pady=(1,1),sticky="nsew")
+            # self.ele.insert(END, header[0],"center")
 
     def addButtonClicked(self):
-        if self.snoEntry.get() in self.entryIds.values():
-            messagebox.showerror('Duplication', f'Record of the empolyee with serial number {self.snoEntry.get()} already exists in the table')
-            return
+        # if self.snoEntry.get() in self.entryIds.values():
+        #     messagebox.showerror('Duplication', f'Record of the empolyee with serial number {self.snoEntry.get()} already exists in the table')
+        #     return
         record, exists = self.createRecord()
         if exists:
-            self.headers = ['S.No', 'Personal Details', 'Basic Pay','HRA(%)', 'HRA', 'DA%', 'DA', 'TDA', 'DA to TDA(%)', 'DA to TDA', 'Deductions', 'Total', 'Action']
-            if self.index == 0:
-                for i, header in enumerate(self.headers):
-                    self.ele = customtkinter.CTkEntry(self,corner_radius=0,font=customtkinter.CTkFont(size=11))
-                    self.ele.grid(row = self.index+3, column = i+1, sticky = 'snew')
-                    self.ele.insert(END, header)
-                    self.disable(self.ele)
             
+            if self.index == 0:
+                self.buildHeader()
+                # self.height = 30
+                # self.tableFrame = customtkinter.CTkScrollableFrame(self,corner_radius=0,orientation='horizontal')
+                # self.tableFrame.grid(row=3, column=1,columnspan = 13, pady=(20,0), sticky="nsew")
+                # for i, header in enumerate(self.headers):
+                #     self.ele = customtkinter.CTkEntry(self.tableFrame,corner_radius=0,font=customtkinter.CTkFont(size=11))
+                #     self.ele.grid(row = self.index+3, column = i+1, sticky = 'snew')
+                #     self.ele.insert(END, header)
+                #     self.disable(self.ele)
+            self.height+=70
+            self.tableFrame.configure(height = self.height)
             elements = []
             for i, rec in enumerate(record):
-                if i == 1:
-                    self.ele = customtkinter.CTkTextbox(master=self,height = 70,corner_radius=0,font=customtkinter.CTkFont(size=10))
-                    self.ele.grid(row=self.index+4, column=i+1, sticky="nsew")
+                if i == 1 or i==2:
+                    self.ele = customtkinter.CTkTextbox(master=self.tableFrame,height = 70,corner_radius=0,font=customtkinter.CTkFont(size=12))
+                    self.ele.grid(row=self.index+4, column=i, sticky="nsew")
                     self.ele.insert(END,rec)
                     elements.append(self.ele)
                     self.disable(self.ele)
                 else:
-                    self.ele = customtkinter.CTkEntry(master=self,corner_radius=0,font=customtkinter.CTkFont(size=10))
-                    self.ele.grid(row=self.index+4, column=i+1, sticky="nsew")
+                    self.ele = customtkinter.CTkEntry(master=self.tableFrame,corner_radius=0,font=customtkinter.CTkFont(size=12))
+                    self.ele.grid(row=self.index+4, column=i, sticky="nsew")
                     self.ele.insert(END,rec)
                     elements.append(self.ele)
                     self.disable(self.ele)
-            self.deleteButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2,hover_color='red', text_color=("gray10", "#DCE4EE"), text='Remove', command=partial(self.deleteButtonClicked, self.index),font=customtkinter.CTkFont(size=10, weight='bold'))
-            self.deleteButton.grid(row=self.index+4, column=13, padx=(5, 5),pady = (5,5), sticky="nsew")
+            self.deleteButton = customtkinter.CTkButton(master=self.tableFrame, fg_color="transparent", border_width=2,hover_color='red', text_color=("gray10", "#DCE4EE"), text='Remove', command=partial(self.deleteButtonClicked, self.index),font=customtkinter.CTkFont(size=12, weight='bold'))
+            self.deleteButton.grid(row=self.index+4, column=i+1, padx=(5, 5),pady = (5,5), sticky="nsew")
             elements.append(self.deleteButton)
             self.entries[self.index] = (elements, record)
             self.entryIds[self.index] = record[0]
             self.index+=1
+            
 
     def deleteButtonClicked(self, i):
         for ele in self.entries[i][0]:
             ele.destroy()
         del self.entries[i]
         del self.entryIds[i]
+        if len(self.entries)==0:
+            self.tableFrame.destroy()
+            self.index = 0
+        self.height-=70
+        self.tableFrame.configure(height = self.height)
 
     def exportButtonClicked(self):
         file_path = filedialog.asksaveasfilename(
