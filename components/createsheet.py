@@ -67,7 +67,17 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
         self.searchButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"), text='Search Employee', command=self.searchButtonClicked)
         self.searchButton.grid(row=1, column=8, columnspan = 6, padx=(20, 20), pady=(20, 0), sticky="ew")
         self.snoEntry.bind('<Return>', command=self.enterPressed)
+        self.textbox = customtkinter.CTkTextbox(master=self,height = 100, width = 150)
+        self.textbox.grid(row=2, column=1, columnspan = 7,padx=(20, 20), pady=(20, 20), sticky="nsew")
+        # self.textbox.insert('0.0', f'Name: {self.name.get()}\nDate of Birth: {self.dob.get()}\nCO: {self.co.get()}\nRank: {self.rank.get()}\nMobile Number: {self.mobno.get()}')
+        # self.textbox.configure(state = 'hidden')
+        self.searchButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"),hover_color='green', text='Add',height = 80, command=self.addButtonClicked)
+        # self.searchButton.configure(state = 'hidden')
+        self.searchButton.grid(row=2, column=8, columnspan = 3, padx=(20, 20), pady=(20, 20), sticky="ew")
         
+        self.exportButton = customtkinter.CTkButton(master=self, border_width=2, text_color=("gray10", "#DCE4EE"), text='Export',height = 80, command=self.exportButtonClicked)
+        self.exportButton.grid(row=2, column=11, columnspan = 3, padx=(20, 20), pady=(20, 20), sticky="ew")
+        # self.exportButton.configure(state = 'hidden')
         # self.tableFrame = CustomTable(self,self.con)
         
     def enterPressed(self,event):
@@ -95,14 +105,16 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
             self.co = self._ctsv(data[3])
             self.rank = self._ctsv(data[4])
             self.mobno = self._ctsv(data[5])
-            self.textbox = customtkinter.CTkTextbox(master=self,height = 100, width = 150)
-            self.textbox.grid(row=2, column=1, columnspan = 7,padx=(20, 20), pady=(20, 20), sticky="nsew")
+            # self.textbox = customtkinter.CTkTextbox(master=self,height = 100, width = 150)
+            # self.textbox.grid(row=2, column=1, columnspan = 7,padx=(20, 20), pady=(20, 20), sticky="nsew")
             self.textbox.insert('0.0', f'Name: {self.name.get()}\nDate of Birth: {self.dob.get()}\nCO: {self.co.get()}\nRank: {self.rank.get()}\nMobile Number: {self.mobno.get()}')
             self.textbox.configure(state = 'disabled')
-            self.searchButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"),hover_color='green', text='Add',height = 80, command=self.addButtonClicked)
-            self.searchButton.grid(row=2, column=8, columnspan = 3, padx=(20, 20), pady=(20, 20), sticky="ew")
-            self.exportButton = customtkinter.CTkButton(master=self, border_width=2, text_color=("gray10", "#DCE4EE"), text='Export',height = 80, command=self.exportButtonClicked)
-            self.exportButton.grid(row=2, column=11, columnspan = 3, padx=(20, 20), pady=(20, 20), sticky="ew")
+            # self.searchButton.configure(state = 'normal')
+            # self.exportButton.configure(state = 'normal')
+            # self.searchButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"),hover_color='green', text='Add',height = 80, command=self.addButtonClicked)
+            # self.searchButton.grid(row=2, column=8, columnspan = 3, padx=(20, 20), pady=(20, 20), sticky="ew")
+            # self.exportButton = customtkinter.CTkButton(master=self, border_width=2, text_color=("gray10", "#DCE4EE"), text='Export',height = 80, command=self.exportButtonClicked)
+            # self.exportButton.grid(row=2, column=11, columnspan = 3, padx=(20, 20), pady=(20, 20), sticky="ew")
         else:
             messagebox.showerror('Not Found', f'Empolyee with serial number {self.snoEntry.get()} does not exists')
 
@@ -229,9 +241,10 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
             # self.ele.insert(END, header[0],"center")
 
     def addButtonClicked(self):
-        # if self.snoEntry.get() in self.entryIds.values():
-        #     messagebox.showerror('Duplication', f'Record of the empolyee with serial number {self.snoEntry.get()} already exists in the table')
-        #     return
+        if self.snoEntry.get == '' or self.snoEntry.get() in self.entryIds.values():
+            messagebox.showerror('Duplication', f'Record of the empolyee with serial number {self.snoEntry.get()} already exists in the table')
+            return
+        self.searchButtonClicked()
         record, exists = self.createRecord()
         if exists:
             
