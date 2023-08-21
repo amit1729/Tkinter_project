@@ -211,8 +211,7 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
             ('DAYS',3,23,1,1),
             ('AMT',3,24,1,1),
             ('TOTAL\nDEDN',1,25,3,1),
-            ('AMOUNT\nPAYABLE',1,26,3,1),
-            ('ACTION', 0, 27,4,1)
+            ('AMOUNT\nPAYABLE',1,26,3,1)
         ]
         self.height = 150
         self.tableFrame = customtkinter.CTkScrollableFrame(self,corner_radius=0,orientation='horizontal')
@@ -289,35 +288,77 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
         if file_path:
             workbook = xlsxwriter.Workbook(file_path)
             worksheet = workbook.add_worksheet()
+
+            color_format1 = workbook.add_format({'bg_color': '#efb5da','border': 1, 'border_color': 'black', 'bold': True, 'align': 'center', 'valign': 'vcenter','font_size': 15,'font_name': 'Times New Roman'})
+            color_format2 = workbook.add_format({'bg_color': '#bfab6e','border': 1, 'border_color': 'black', 'bold': True, 'font_size': 11,'font_name': 'Times New Roman', 'align': 'center', 'valign': 'vcenter'})
+            color_format3 = workbook.add_format({'bg_color': '#f0bd24','border': 1, 'border_color': 'black', 'bold': False, 'font_size': 11,'font_name': 'Times New Roman', 'text_wrap': True,  'valign': 'vcenter'})
+            color_format4=workbook.add_format({'bg_color': '#b2d366','border': 1, 'border_color': 'black', 'bold': False, 'font_size': 11,'font_name': 'Times New Roman', 'text_wrap': True,  'valign': 'vcenter'})
+            color_format5=workbook.add_format({'bg_color': '#bfab6e','border': 1, 'border_color': 'black', 'bold': False, 'font_size': 11,'font_name': 'Times New Roman', 'text_wrap': True,  'valign': 'vcenter'})
+            color_format6=workbook.add_format({'bg_color': '#bfab6e','border': 1, 'border_color': 'black', 'bold': True, 'font_size': 11,'font_name': 'Times New Roman', 'text_wrap': True,  'valign': 'vcenter'})
+            color_format7=workbook.add_format({'bg_color': '#efb5da'})
+                                              
             worksheet.set_row(1, 20)
             worksheet.set_row(2, 20)
-            worksheet.merge_range('C2:I3', f'Salary Report for the month of {self.monthOptionMenu.get()} {self.yearOptionMenu.get()}', cell_format=workbook.add_format({'bold': True, 'align': 'center', 'valign': 'vcenter','font_size': 15,'font_name': 'Times New Roman'}))
+            worksheet.merge_range('A1:B4'," ",color_format7)
+            worksheet.merge_range('C1:I1'," ",color_format7)
+            worksheet.merge_range('C4:I4'," ",color_format7)
+            worksheet.merge_range('J1:AA4'," ",color_format7)
+            worksheet.merge_range('C2:I3', f'Salary Report for the month of {self.monthOptionMenu.get()} {self.yearOptionMenu.get()}' ,color_format1)
             worksheet.set_column('B:B', 30)
-            x = 0
-            header_format = workbook.add_format({'bold': True, 'font_size': 11,'font_name': 'Times New Roman', 'align': 'center', 'valign': 'vcenter'})
-            # Write content with the specified font size
-            colns = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-            for c in range(len(self.headers)-1):
+
+            colns=self.columns_name(len(self.headers))
+
+            for c in range(len(self.headers)):
                 if colns[c]!='B':
                     worksheet.set_column(f'{colns[c]}:{colns[c]}', 15)
-                worksheet.write(colns[c]+str(5), self.headers[c], header_format)
 
+                start_row=self.headers[c][1]
+                start_col=self.headers[c][2]
+                end_row=self.headers[c][3]
+                end_col=self.headers[c][4]
+                starting=colns[start_col]+str(start_row+5)
+                ending=colns[start_col+end_col-1]+str(start_row+end_row+4)
+
+                if(starting==ending):
+                    worksheet.write(starting, self.headers[c][0],color_format2)
+                else:
+                    worksheet.merge_range(f'{starting}:{ending}', self.headers[c][0],color_format2 )
+
+            
+            
             records = list(map(lambda x: x[1], self.entries.values()))
             records.sort(key = lambda x: x[0])
-            # print(records)
-            entry_format = workbook.add_format({'bold': False, 'font_size': 11,'font_name': 'Times New Roman', 'text_wrap': True,  'valign': 'vcenter'})
+
             for i, record in enumerate(records):
                 worksheet.set_row(i+5, 90)
-                colns = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+                colns=self.columns_name(len(self.headers))
                 for c in range(len(record)):
-                    if c == 1:
-                        worksheet.write(colns[c]+str(i+6), record[c], entry_format)
+                    if c == 1 or c==2:
+                        worksheet.write(colns[c]+str(i+9), record[c],color_format3)
                     elif c==0:
-                        worksheet.write(colns[c]+str(i+6), int(record[c]), entry_format)
+                        worksheet.write(colns[c]+str(i+9), int(record[c]),color_format3)
+                    elif(c in [9,10,17,18,19,20]):
+                        worksheet.write(colns[c]+str(i+9), float(record[c]),color_format4)
+                    elif c==13:
+                        worksheet.write(colns[c]+str(i+9), float(record[c]),color_format5)
+                    elif c==26:
+                        worksheet.write(colns[c]+str(i+9), float(record[c]),color_format6)
                     else:
-                        worksheet.write(colns[c]+str(i+6), float(record[c]), entry_format)
+                        worksheet.write(colns[c]+str(i+9), float(record[c]),color_format3)
+            
+            
             workbook.close()
-            os.system('start '+file_path)
+            os.system('open '+file_path)
         else:
             messagebox.showerror('Error', 'Filename not given')
+
+    def columns_name(self,n):
+        c=[]
+        for i in range(n):
+            if(i/26>=1):
+                c.append(chr(ord('A')+int(i/26)-1)+chr(ord('A')+i%26))
+            else:
+                c.append(chr(ord('A')+i%26))
+        return c
 
