@@ -289,12 +289,12 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
             workbook = xlsxwriter.Workbook(file_path)
             worksheet = workbook.add_worksheet()
 
-            color_format1 = workbook.add_format({'bg_color': '#efb5da','border': 1, 'border_color': 'black', 'bold': True, 'align': 'center', 'valign': 'vcenter','font_size': 15,'font_name': 'Times New Roman'})
-            color_format2 = workbook.add_format({'bg_color': '#bfab6e','border': 1, 'border_color': 'black', 'bold': True, 'font_size': 11,'font_name': 'Times New Roman', 'align': 'center', 'valign': 'vcenter'})
-            color_format3 = workbook.add_format({'bg_color': '#f0bd24','border': 1, 'border_color': 'black', 'bold': False, 'font_size': 11,'font_name': 'Times New Roman', 'text_wrap': True,  'valign': 'vcenter'})
-            color_format4=workbook.add_format({'bg_color': '#b2d366','border': 1, 'border_color': 'black', 'bold': False, 'font_size': 11,'font_name': 'Times New Roman', 'text_wrap': True,  'valign': 'vcenter'})
-            color_format5=workbook.add_format({'bg_color': '#bfab6e','border': 1, 'border_color': 'black', 'bold': False, 'font_size': 11,'font_name': 'Times New Roman', 'text_wrap': True,  'valign': 'vcenter'})
-            color_format6=workbook.add_format({'bg_color': '#bfab6e','border': 1, 'border_color': 'black', 'bold': True, 'font_size': 11,'font_name': 'Times New Roman', 'text_wrap': True,  'valign': 'vcenter'})
+            color_format1 = workbook.add_format({'bg_color': '#efb5da','border': 1, 'border_color': 'black', 'bold': True, 'text_wrap': True, 'align': 'center', 'valign': 'vcenter','font_size': 15,'font_name': 'Times New Roman'})
+            color_format2 = workbook.add_format({'bg_color': '#bfab6e','border': 1, 'border_color': 'black', 'bold': True, 'text_wrap': True, 'font_size': 11,'font_name': 'Times New Roman', 'align': 'center', 'valign': 'vcenter'})
+            color_format3 = workbook.add_format({'bg_color': '#f0bd24','border': 1, 'border_color': 'black', 'bold': False, 'text_wrap': True, 'font_size': 11,'font_name': 'Times New Roman', 'text_wrap': True,  'valign': 'vcenter'})
+            color_format4=workbook.add_format({'bg_color': '#b2d366','border': 1, 'border_color': 'black', 'bold': False, 'text_wrap': True, 'font_size': 11,'font_name': 'Times New Roman', 'text_wrap': True,  'valign': 'vcenter'})
+            color_format5=workbook.add_format({'bg_color': '#bfab6e','border': 1, 'border_color': 'black', 'bold': False, 'text_wrap': True, 'font_size': 11,'font_name': 'Times New Roman', 'text_wrap': True,  'valign': 'vcenter'})
+            color_format6=workbook.add_format({'bg_color': '#bfab6e','border': 1, 'border_color': 'black', 'bold': True, 'text_wrap': True, 'font_size': 11,'font_name': 'Times New Roman', 'text_wrap': True,  'valign': 'vcenter'})
             color_format7=workbook.add_format({'bg_color': '#efb5da'})
                                               
             worksheet.set_row(1, 20)
