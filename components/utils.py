@@ -35,8 +35,6 @@ def validAmount(num):
 
 def validNumber(number):
     # print(len(number))
-    if len(number)!=10:
-        return False
     try:
         # print(number)
         int(number)

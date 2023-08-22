@@ -2,6 +2,7 @@ import customtkinter
 from tkinter import *
 from tkinter import messagebox
 from .utils import validDate, validNumber, chageFormat
+from functools import partial
 
 class UpdatePersonal(customtkinter.CTkScrollableFrame):
     def __init__(self,master,connection):
@@ -10,11 +11,11 @@ class UpdatePersonal(customtkinter.CTkScrollableFrame):
         self.grid(row=0, column=1,rowspan=4, padx=(20, 0), pady=(20,0), sticky="nsew")
         self.grid_columnconfigure((1,2,4), weight = 1)
         self.grid_columnconfigure(3, weight = 2)
-        self.snoEntry = customtkinter.CTkEntry(self, placeholder_text="Serial Number of Employee To Update")
-        self.snoEntry.grid(row = 0, column = 2, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.idEntry = customtkinter.CTkEntry(self, placeholder_text="Serial Number of Employee To Update")
+        self.idEntry.grid(row = 0, column = 2, padx=(20, 20), pady=(20,0), sticky = "ew")
         self.searchButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"), text='Search Employee', command=self.searchButtonClicked)
         self.searchButton.grid(row=0, column=3, padx=(20, 20), pady=(20, 0), sticky="w")
-        self.snoEntry.bind('<Return>', command=self.enterPressed)
+        self.idEntry.bind('<Return>', command=self.enterPressed)
 
     def enterPressed(self,event):
         self.searchButtonClicked()
@@ -25,7 +26,7 @@ class UpdatePersonal(customtkinter.CTkScrollableFrame):
     def fetchPersonalDetails(self):
         cur = self.con.cursor()
         res = cur.execute("SELECT * FROM Personal WHERE id = ?",
-               (self.snoEntry.get(),))
+               (self.idEntry.get(),))
         row = res.fetchone()
         cur.close()
         flag = not row == None
@@ -71,7 +72,7 @@ class UpdatePersonal(customtkinter.CTkScrollableFrame):
             self.clearButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"), text='Clear',command=self.clearButtonClicked)
             self.clearButton.grid(row=6, column=2, padx=(20, 20), pady=(20, 20), sticky="e")
         else:
-            messagebox.showerror('Error', f'Empolyee with serial number {self.snoEntry.get()} does not exists')
+            messagebox.showerror('Error', f'Empolyee with serial number {self.idEntry.get()} does not exists')
 
     def validationError(self, wdgt, msg):
         # self.editButtonClicked()
@@ -148,10 +149,10 @@ class UpdatePersonal(customtkinter.CTkScrollableFrame):
     def submitButtonClicked(self):
         cur = self.con.cursor()
         cur.execute("UPDATE Personal SET name = ?, dob = ?, co = ?, rank = ?, mobno = ? WHERE id = ?",
-            (self.data['name'][0].upper(), chageFormat(self.data['dob'][0], '%d/%m/%Y', '%Y-%m-%d'), self.data['co'][0].upper(), self.data['rank'][0].upper(), self.data['mobno'][0], self.snoEntry.get()))
+            (self.data['name'][0].upper(), chageFormat(self.data['dob'][0], '%d/%m/%Y', '%Y-%m-%d'), self.data['co'][0].upper(), self.data['rank'][0].upper(), self.data['mobno'][0], self.idEntry.get()))
         self.con.commit()
         cur.close()
-        messagebox.showinfo('Success',  f'Details of Employee with id \'{self.snoEntry.get()}\' Updated Successfully')
+        messagebox.showinfo('Success',  f'Details of Employee with id \'{self.idEntry.get()}\' Updated Successfully')
         # self.destroy()
         # self.master.current = UpdateSalary(self.master, 0)
         destList = [self.nameLabel, self.nameEntry, self.rankLabel, self.rankEntry,

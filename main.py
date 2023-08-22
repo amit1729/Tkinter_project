@@ -13,30 +13,33 @@ class App(customtkinter.CTk):
         cur = con.cursor()
         if not table_exists('Personal', con):
             cur.execute('''
-                    CREATE TABLE Personal (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    name varchar(255) NOT NULL,
-                    dob DATE NOT NULL,
-                    co varchar(255) NOT NULL,
-                    rank varchar(255) NOT NULL,
-                    mobno varchar(255) NOT NULL)
+                        CREATE TABLE Personal (
+                        id INTEGER PRIMARY KEY,
+                        name varchar(255) NOT NULL,
+                        rank varchar(255) NOT NULL,
+                        postedat varchar(255) NOT NULL,
+                        citycode varchar(255) NOT NULL,
+                        doa DATE NOT NULL,
+                        doi DATE NOT NULL,
+                        pran varchar(255) NOT NULL)
                     ''')
             con.commit()
             
         if not table_exists('Salary', con):
             cur.execute('''
-                    CREATE TABLE Salary (
-                    id INTEGER,
-                    month varchar(255) NOT NULL,
-                    year int NOT NULL,
-                    basic DOUBLE(10, 2) NOT NULL,
-                    da DOUBLE(3, 2) NOT NULL,
-                    tda DOUBLE(10, 2) NOT NULL,
-                    daonda DOUBLE(3, 2) NOT NULL,
-                    deductions DOUBLE(10, 2) NOT NULL,
-                    hra DOUBLE(3, 2) NOT NULL,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    FOREIGN KEY (id) REFERENCES Personal(id) ON DELETE CASCADE
+                        CREATE TABLE Salary (
+                        id INTEGER,
+                        month varchar(255) NOT NULL,
+                        year int NOT NULL,
+                        basic DOUBLE(10, 2) NOT NULL,
+                        da DOUBLE(10, 2) NOT NULL,
+                        tpt DOUBLE(10, 2) NOT NULL,
+                        gmc DOUBLE(10, 2) NOT NULL,
+                        indvc DOUBLE(10, 2) NOT NULL,
+                        cgeis DOUBLE(10, 2) NOT NULL,
+                        hra DOUBLE(10, 2) NOT NULL,
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        FOREIGN KEY (id) REFERENCES Personal(id) ON DELETE CASCADE
                     )
                     ''')
             con.commit()
