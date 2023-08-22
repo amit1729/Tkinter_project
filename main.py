@@ -19,7 +19,7 @@ class App(customtkinter.CTk):
                         rank varchar(255) NOT NULL,
                         postedat varchar(255) NOT NULL,
                         citycode varchar(255) NOT NULL,
-                        doa DATE NOT NULL,
+                        doj DATE NOT NULL,
                         doi DATE NOT NULL,
                         pran varchar(255) NOT NULL)
                     ''')
@@ -29,8 +29,7 @@ class App(customtkinter.CTk):
             cur.execute('''
                         CREATE TABLE Salary (
                         id INTEGER,
-                        month varchar(255) NOT NULL,
-                        year int NOT NULL,
+                        date Date NOT NULL,
                         basic DOUBLE(10, 2) NOT NULL,
                         da DOUBLE(10, 2) NOT NULL,
                         tpt DOUBLE(10, 2) NOT NULL,

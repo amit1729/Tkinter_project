@@ -13,44 +13,44 @@ class NewEmp(customtkinter.CTkScrollableFrame):
         self.grid_columnconfigure(3, weight = 2)
 
         self.idLabel = customtkinter.CTkLabel(self, text="Employee Number: ", font=customtkinter.CTkFont(size=15, weight="bold"), anchor ='w')
-        self.idLabel.grid(row = 0, column = 2, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.idLabel.grid(row = 0, column = 2, padx=(20, 20), pady=(30,0), sticky = "ew")
         self.idEntry = customtkinter.CTkEntry(self, placeholder_text="Employee Number")
-        self.idEntry.grid(row = 0, column = 3, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.idEntry.grid(row = 0, column = 3, padx=(20, 20), pady=(30,0), sticky = "ew")
 
         self.nameLabel = customtkinter.CTkLabel(self, text="Name: ", font=customtkinter.CTkFont(size=15, weight="bold"), anchor ='w')
-        self.nameLabel.grid(row = 1, column = 2, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.nameLabel.grid(row = 1, column = 2, padx=(20, 20), pady=(10,0), sticky = "ew")
         self.nameEntry = customtkinter.CTkEntry(self, placeholder_text="Name")
-        self.nameEntry.grid(row = 1, column = 3, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.nameEntry.grid(row = 1, column = 3, padx=(20, 20), pady=(10,0), sticky = "ew")
 
         self.rankLabel = customtkinter.CTkLabel(self, text="Rank: ", font=customtkinter.CTkFont(size=15, weight="bold"),anchor = 'w')
-        self.rankLabel.grid(row = 2, column = 2, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.rankLabel.grid(row = 2, column = 2, padx=(20, 20), pady=(10,0), sticky = "ew")
         self.rankEntry = customtkinter.CTkEntry(self, placeholder_text="Rank")
-        self.rankEntry.grid(row = 2, column = 3, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.rankEntry.grid(row = 2, column = 3, padx=(20, 20), pady=(10,0), sticky = "ew")
 
         self.postedatLabel = customtkinter.CTkLabel(self, text="Posted At: ", font=customtkinter.CTkFont(size=15, weight="bold"),anchor = 'w')
-        self.postedatLabel.grid(row = 3, column = 2, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.postedatLabel.grid(row = 3, column = 2, padx=(20, 20), pady=(10,0), sticky = "ew")
         self.postedatEntry = customtkinter.CTkEntry(self, placeholder_text="Station")
-        self.postedatEntry.grid(row = 3, column = 3, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.postedatEntry.grid(row = 3, column = 3, padx=(20, 20), pady=(10,0), sticky = "ew")
 
         self.citycodeLabel = customtkinter.CTkLabel(self, text="City Code: ", font=customtkinter.CTkFont(size=15, weight="bold"),anchor = 'w')
-        self.citycodeLabel.grid(row = 4, column = 2, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.citycodeLabel.grid(row = 4, column = 2, padx=(20, 20), pady=(10,0), sticky = "ew")
         self.citycodeEntry = customtkinter.CTkEntry(self, placeholder_text="City Code")
-        self.citycodeEntry.grid(row = 4, column = 3, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.citycodeEntry.grid(row = 4, column = 3, padx=(20, 20), pady=(10,0), sticky = "ew")
 
         self.dojLabel = customtkinter.CTkLabel(self, text="DOJ: ", font=customtkinter.CTkFont(size=15, weight="bold"),anchor = 'w')
-        self.dojLabel.grid(row = 5, column = 2, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.dojLabel.grid(row = 5, column = 2, padx=(20, 20), pady=(10,0), sticky = "ew")
         self.dojEntry = customtkinter.CTkEntry(self, placeholder_text="DD/MM/YYYY")
-        self.dojEntry.grid(row = 5, column = 3, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.dojEntry.grid(row = 5, column = 3, padx=(20, 20), pady=(10,0), sticky = "ew")
 
         self.doiLabel = customtkinter.CTkLabel(self, text="DOI: ", font=customtkinter.CTkFont(size=15, weight="bold"),anchor = 'w')
-        self.doiLabel.grid(row = 6, column = 2, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.doiLabel.grid(row = 6, column = 2, padx=(20, 20), pady=(10,0), sticky = "ew")
         self.doiEntry = customtkinter.CTkEntry(self, placeholder_text="DD/MM/YYYY")
-        self.doiEntry.grid(row = 6, column = 3, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.doiEntry.grid(row = 6, column = 3, padx=(20, 20), pady=(10,0), sticky = "ew")
 
         self.pranLabel = customtkinter.CTkLabel(self, text="PRAN: ", font=customtkinter.CTkFont(size=15, weight="bold"),anchor = 'w')
-        self.pranLabel.grid(row = 7, column = 2, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.pranLabel.grid(row = 7, column = 2, padx=(20, 20), pady=(10,0), sticky = "ew")
         self.pranEntry = customtkinter.CTkEntry(self, placeholder_text="PRAN")
-        self.pranEntry.grid(row = 7, column = 3, padx=(20, 20), pady=(20,0), sticky = "ew")
+        self.pranEntry.grid(row = 7, column = 3, padx=(20, 20), pady=(10,0), sticky = "ew")
 
         self.nextButton = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"), text='Next', command=self.nextButtonClicked)
         self.nextButton.grid(row=8, column=3, padx=(20, 20), pady=(20, 20), sticky="w")
@@ -148,7 +148,6 @@ class NewEmp(customtkinter.CTkScrollableFrame):
         elif not validDate(data['doi'][0]):
             self.validationError(data['doi'][1], 'Please enter a valid date in dd/mm/yyyy format')
             return False
-        
         elif not validNumber(data['pran'][0]):
             self.validationError(data['pran'][1], 'Please enter PRAN number of the employee')
             return False
@@ -172,7 +171,7 @@ class NewEmp(customtkinter.CTkScrollableFrame):
     def submitButtonClicked(self):
         if self.unique():
             cur = self.con.cursor()
-            cur.execute("INSERT INTO Personal (id, name, rank, postedat, citycode, doa, doi, pran) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            cur.execute("INSERT INTO Personal (id, name, rank, postedat, citycode, doj, doi, pran) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                 (self.data['id'][0],
                  self.data['name'][0], 
                  self.data['rank'][0],
@@ -185,6 +184,7 @@ class NewEmp(customtkinter.CTkScrollableFrame):
             self.con.commit()
             cur.close()
             # self.destroy()
+            self.editButtonClicked()
             self.clearButtonClicked()
             # self.master.current = UpdateSalary(self.master,self.con, sno)
             messagebox.showinfo('Success', 'New Employee record create successfully\nPlease head over to update salary to enter salary details of the employee')
