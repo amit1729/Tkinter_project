@@ -107,6 +107,8 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
             self.mobno = self._ctsv(data[5])
             # self.textbox = customtkinter.CTkTextbox(master=self,height = 100, width = 150)
             # self.textbox.grid(row=2, column=1, columnspan = 7,padx=(20, 20), pady=(20, 20), sticky="nsew")
+            self.textbox.configure(state = 'normal')
+            self.textbox.delete('0.0', END)
             self.textbox.insert('0.0', f'Name: {self.name.get()}\nDate of Birth: {self.dob.get()}\nCO: {self.co.get()}\nRank: {self.rank.get()}\nMobile Number: {self.mobno.get()}')
             self.textbox.configure(state = 'disabled')
             # self.searchButton.configure(state = 'normal')

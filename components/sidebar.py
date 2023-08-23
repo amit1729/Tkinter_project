@@ -10,7 +10,7 @@ class SideBar(customtkinter.CTkFrame):
         super().__init__(master)
         self.master = master
         self.con = connection
-        self.master.current = CreateSheet(self.master,self.con)
+        self.master.current = UpdateSalary(self.master,self.con)
         self.width=140
         self.corner_radius=0
         self.grid(row=0, column=0, rowspan=4, padx=(5, 0), pady=(20,0), sticky="nsew")
