@@ -1,11 +1,13 @@
 import customtkinter
 from tkinter import *
+import tkinter as tk
 from tkinter import messagebox
 from .utils import chageFormat
 
 
 class DisplaySheet(customtkinter.CTkScrollableFrame):
     def __init__(self,master,connection):
+
         self.sallis=[]
         self.des(self.sallis)
         self.row0 = 0

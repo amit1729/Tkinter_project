@@ -189,7 +189,7 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
 
     def buildHeader(self):
         self.headers = [
-            ('S.No', 0, 0, 4, 1),
+            ("S. No.", 0, 0, 4, 1),
             ('PERSONAL NUMBER\n AND DETAILS OF GOVT SERVANT', 0,1,4,1),
             ('RANK\n STATION\n DOJ\n DOI',0,2,4,1),
             ('ALLOWANCES', 0,3,1,11),
@@ -302,16 +302,15 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
             workbook = xlsxwriter.Workbook(file_path)
             worksheet = workbook.add_worksheet()
 
-            color_format1 = workbook.add_format({'bg_color': '#efb5da','border': 1, 'border_color': 'black', 'bold': True, 'text_wrap': True, 'align': 'center', 'valign': 'vcenter','font_size': 15,'font_name': 'Times New Roman'})
+
+            color_format1 = workbook.add_format({'bg_color': '#efb5da', 'bold': True, 'text_wrap': True, 'align': 'center', 'valign': 'vcenter','font_size': 15,'font_name': 'Times New Roman'})
             color_format2 = workbook.add_format({'bg_color': '#bfab6e','border': 1, 'border_color': 'black', 'bold': True, 'text_wrap': True, 'font_size': 11,'font_name': 'Times New Roman', 'align': 'center', 'valign': 'vcenter'})
             color_format3 = workbook.add_format({'bg_color': '#f0bd24','border': 1, 'border_color': 'black', 'bold': False, 'text_wrap': True, 'font_size': 11,'font_name': 'Times New Roman', 'text_wrap': True,  'valign': 'vcenter'})
             color_format4=workbook.add_format({'bg_color': '#b2d366','border': 1, 'border_color': 'black', 'bold': False, 'text_wrap': True, 'font_size': 11,'font_name': 'Times New Roman', 'text_wrap': True,  'valign': 'vcenter'})
             color_format5=workbook.add_format({'bg_color': '#bfab6e','border': 1, 'border_color': 'black', 'bold': False, 'text_wrap': True, 'font_size': 11,'font_name': 'Times New Roman', 'text_wrap': True,  'valign': 'vcenter'})
             color_format6=workbook.add_format({'bg_color': '#bfab6e','border': 1, 'border_color': 'black', 'bold': True, 'text_wrap': True, 'font_size': 11,'font_name': 'Times New Roman', 'text_wrap': True,  'valign': 'vcenter'})
             color_format7=workbook.add_format({'bg_color': '#efb5da'})
-                                              
-            worksheet.set_row(1, 20)
-            worksheet.set_row(2, 20)
+
             worksheet.merge_range('A1:B4'," ",color_format7)
             worksheet.merge_range('C1:I1'," ",color_format7)
             worksheet.merge_range('C4:I4'," ",color_format7)
@@ -360,7 +359,18 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
                     else:
                         worksheet.write(colns[c]+str(i+9), float(record[c]),color_format3)
             
+            worksheet.set_row(1, 20)
+            worksheet.set_row(2, 20)
+            worksheet.set_row(3, 20)
+            worksheet.set_row(4, 20)
+            worksheet.set_row(5, 60)
+            worksheet.set_row(6, 20)
+            worksheet.set_row(7, 20)
+
+            worksheet.set_column('A:A',3)
+            worksheet.set_column('C:C',12)
             
+
             workbook.close()
             os.system('open '+file_path)
         else:
