@@ -212,6 +212,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
 
     def deleteButtonClicked(self, i):
         self.height = max(0, self.height-50)
+        self.infoFrame.configure(height = min(150,self.height))
         self.idDict[i][0].destroy()
         self.idDict[i][1].destroy()
         del self.idDict[i]
