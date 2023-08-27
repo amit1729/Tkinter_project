@@ -20,7 +20,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         
 
         today = datetime.date.today()
-        self.monthList = ['January', 'Febuary', 'March', 'April','May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+        self.monthList = ['January', 'February', 'March', 'April','May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
         self.monthVar = StringVar(value=self.monthList[today.month-1])
 
         self.yearList = list(map(str, list(range(today.year-15,today.year+2,1))))
@@ -287,7 +287,6 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         cur = self.con.cursor()
         res = cur.execute("SELECT * FROM Salary")
         row = res.fetchall()
-        print(row)
     
     def getLatestData(self, id):
         cur = self.con.cursor()
