@@ -403,7 +403,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
 
 
     def submitButtonClicked(self):
-        fields = self.getFields()
+        fields = list(self.getFields())
         cur = self.con.cursor()
         if not self.recordsVar.get():
             ids = self.fetchAllIds()
@@ -416,7 +416,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         if len(ids)==0:
             messagebox.showerror('No Records', 'No Records to Update')
         if self.allSelected(fields):
-            fields = self.params.keys()
+            fields = list(self.params.keys())
             
             for id in ids:
                 if self.check(id):
@@ -459,9 +459,3 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         cur.close()
         messagebox.showerror('Success', 'Records Updated successfully')
         self.editButtonClicked()
-
-
-
-
-        
-
