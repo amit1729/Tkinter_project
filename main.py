@@ -2,6 +2,7 @@ import customtkinter
 from components.sidebar import SideBar 
 import sqlite3
 from components.utils import *
+import os
 
 customtkinter.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_default_color_theme("dark-blue")  # Themes: "blue" (standard), "green", "dark-blue"
@@ -9,7 +10,8 @@ customtkinter.set_default_color_theme("dark-blue")  # Themes: "blue" (standard),
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
-        con = sqlite3.connect('records.db')
+        if not os.path.isdir('out'): os.mkdir('out')
+        con = sqlite3.connect('out/records.db')
         cur = con.cursor()
         if not table_exists('Personal', con):
             cur.execute('''

@@ -3,12 +3,11 @@ from tkinter import *
 import tkinter as tk
 import datetime
 from tkinter import messagebox
-from .utils import chageFormat
+from .utils import chageFormat, log_errors_to_file
 
-
+@log_errors_to_file('out/errorlogs.txt')
 class DisplaySheet(customtkinter.CTkScrollableFrame):
     def __init__(self,master,connection):
-
         self.sallis=[]
         self.id_current=[]
         self.search_results=[]
@@ -60,7 +59,7 @@ class DisplaySheet(customtkinter.CTkScrollableFrame):
         self.tableFrame = customtkinter.CTkScrollableFrame(self,corner_radius=0,orientation='horizontal')
         self.tableFrame.grid(row=self.row0+1, column=1,columnspan = 4, pady=(10,0), sticky="nsew")
 
-        self.height=60
+        self.height=50
         self.tableFrame.configure(height = self.height)
 
 
@@ -85,7 +84,7 @@ class DisplaySheet(customtkinter.CTkScrollableFrame):
             j=j+1
             f=1
 
-            self.height+=60
+            self.height+=50
             self.tableFrame.configure(height = self.height)
 
             self.id_current.append(i[0])
@@ -107,12 +106,14 @@ class DisplaySheet(customtkinter.CTkScrollableFrame):
 
         cur.close()
 
+    @log_errors_to_file('out/errorlogs.txt')
     def enterPressed(self,event):
         self.searchButtonClicked()
 
+    @log_errors_to_file('out/errorlogs.txt')
     def searchButtonClicked(self):
         self.id_current=[]
-        self.height=60
+        self.height=50
         self.tableFrame.configure(height = self.height)
 
         self.des(self.main_table)
@@ -131,7 +132,7 @@ class DisplaySheet(customtkinter.CTkScrollableFrame):
                 j1=j1+1
                 f=1
 
-                self.height+=60
+                self.height+=50
                 self.tableFrame.configure(height = self.height)
                 self.id_current.append(i[0])
 
@@ -154,7 +155,8 @@ class DisplaySheet(customtkinter.CTkScrollableFrame):
             messagebox.showerror('Not Found', f'Empolyee with S.No./Name/Rank {self.snoEntry.get()} does not exists')
 
         cur.close()
-        
+    
+    @log_errors_to_file('out/errorlogs.txt')
     def salarybuttonclicked(self,sno):
 
         month_num={
@@ -190,7 +192,7 @@ class DisplaySheet(customtkinter.CTkScrollableFrame):
             self.des(self.index_table)
             self.des(self.search_results)
 
-            self.height=60
+            self.height=50
             self.tableFrame.configure(height = self.height)
 
             s=["Per No.","Name","Basic","DA","TPT","GMC","INDVC","CGEIS","HRA"]
@@ -208,7 +210,7 @@ class DisplaySheet(customtkinter.CTkScrollableFrame):
 
             for sal_details in salary_row:
 
-                self.height+=60
+                self.height+=50
                 self.tableFrame.configure(height = self.height)
                 f=1
                 j1=j1+1
@@ -229,6 +231,7 @@ class DisplaySheet(customtkinter.CTkScrollableFrame):
         cur.close()
 
 
+    @log_errors_to_file('out/errorlogs.txt')
     def showbuttonclicked(self,sno):
 
         #self.height=60
@@ -266,7 +269,7 @@ class DisplaySheet(customtkinter.CTkScrollableFrame):
             self.des(self.search_results)
             self.des([self.dateLabel,self.monthOptionMenu,self.yearOptionMenu])
 
-            self.height=60
+            self.height=50
             self.tableFrame.configure(height = self.height)
 
             s=["Per No.","Name","Basic","DA","TPT","GMC","INDVC","CGEIS","HRA"]
@@ -284,7 +287,7 @@ class DisplaySheet(customtkinter.CTkScrollableFrame):
 
             for sal_details in salary_row:
 
-                self.height+=60
+                self.height+=50
                 self.tableFrame.configure(height = self.height)
                 f=1
                 j1=j1+1
@@ -305,10 +308,11 @@ class DisplaySheet(customtkinter.CTkScrollableFrame):
         cur.close()
 
 
-    
+    @log_errors_to_file('out/errorlogs.txt')
     def _ctsv(self,x):
         return StringVar(value=str(x))
     
+    @log_errors_to_file('out/errorlogs.txt')
     def des(self,l):
         for i in l:
             i.destroy()

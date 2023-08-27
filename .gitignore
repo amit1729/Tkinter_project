@@ -2,3 +2,4 @@
 *.pyc
 builds
 components/__pycache__/
+out

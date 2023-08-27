@@ -1,5 +1,5 @@
 import datetime
-
+from tkinter import messagebox
 def validDate(date):
     dateFormat = '%d/%m/%Y'
     try:
@@ -78,3 +78,26 @@ def print_table_structure(table_name, connection):
         print(f"{column[1]:12} | {column[2]:16} | {constraints}")
     
     print("\n")
+
+
+def log_errors_to_file(file_path):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            try:
+                result = func(*args, **kwargs)
+                return result
+            except Exception as e:
+                with open(file_path, 'a') as f:
+                    timestamp = datetime.datetime.now().strftime("[%d/%m/%Y %H:%M:%S]")
+                    class_name = args[0].__class__.__name__
+                    error_message = f"{timestamp} {class_name}.{func.__name__}:\n{e}\n"
+                    f.write(error_message)
+                messagebox.showerror('Internal Error', 'Some error occured please see log file for more details')
+        return wrapper
+    return decorator
+
+def runtimelog(idx, file_path = 'out/RuntimeLog.txt'):
+    with open(file_path, 'a') as f:
+        timestamp = datetime.datetime.now().strftime("[%d/%m/%Y %H:%M:%S]")
+        message = f"{timestamp} Records for person number {idx} for the given month is not found hence using closest available data"
+        f.write(message)

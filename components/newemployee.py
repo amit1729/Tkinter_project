@@ -1,8 +1,9 @@
 import customtkinter
 from .updatesal import UpdateSalary
 from tkinter import messagebox
-from .utils import validDate, validNumber, chageFormat
+from .utils import validDate, validNumber, chageFormat, log_errors_to_file
 
+@log_errors_to_file('out/errorlogs.txt')
 class NewEmp(customtkinter.CTkScrollableFrame):
     def __init__(self,master,connection):
         super().__init__(master, label_text='New Employee`s Details', label_font=customtkinter.CTkFont(size=18, weight="bold"))
@@ -59,7 +60,7 @@ class NewEmp(customtkinter.CTkScrollableFrame):
         self.clearButton.grid(row=8, column=2, padx=(20, 20), pady=(20, 20), sticky="e")
 
     
-
+    @log_errors_to_file('out/errorlogs.txt')
     def nextButtonClicked(self):
         self.data = {}
         self.data['name'] = (self.nameEntry.get(), self.nameEntry)
@@ -91,7 +92,7 @@ class NewEmp(customtkinter.CTkScrollableFrame):
             self.msgLabel.grid(row = 9, column = 1,columnspan = 4, padx=(20, 20), pady=(20,0), sticky = "ew")
         # messagebox.showinfo('Confirm Details', 'Please confirm the Employee Details')
 
-
+    @log_errors_to_file('out/errorlogs.txt')
     def editButtonClicked(self):
         self.submitButton.destroy()
         self.editButton.destroy()
@@ -110,6 +111,7 @@ class NewEmp(customtkinter.CTkScrollableFrame):
         self.clearButton.grid(row=8, column=2, padx=(20, 20), pady=(20, 20), sticky="e")
         self.msgLabel.destroy()
 
+    @log_errors_to_file('out/errorlogs.txt')
     def clearButtonClicked(self):
         self.idEntry.delete(0,'end')
         self.nameEntry.delete(0,'end')
@@ -120,12 +122,13 @@ class NewEmp(customtkinter.CTkScrollableFrame):
         self.doiEntry.delete(0,'end')
         self.pranEntry.delete(0,'end')
 
+    @log_errors_to_file('out/errorlogs.txt')
     def validationError(self, wdgt, msg):
         # self.editButtonClicked()
         wdgt.focus()
         messagebox.showerror('Input Error',  msg)
 
-
+    @log_errors_to_file('out/errorlogs.txt')
     def validate(self, data):
         if not validNumber(data['id'][0]):
             self.validationError(data['id'][1], 'Please enter a valid employee ID')
@@ -154,6 +157,7 @@ class NewEmp(customtkinter.CTkScrollableFrame):
         
         return True
 
+    @log_errors_to_file('out/errorlogs.txt')
     def unique(self):
         try:
             cur = self.con.cursor()
@@ -168,6 +172,7 @@ class NewEmp(customtkinter.CTkScrollableFrame):
             messagebox.showerror('Query Error',  'Some error occured')
             raise Exception('Arrrrrrrrrrrrrh')
 
+    @log_errors_to_file('out/errorlogs.txt')
     def submitButtonClicked(self):
         if self.unique():
             cur = self.con.cursor()

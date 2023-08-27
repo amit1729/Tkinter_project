@@ -2,9 +2,10 @@ import customtkinter
 from tkinter import *
 from tkinter import messagebox
 import datetime
-from .utils import validAmount, validPercent, chageFormat, validNumber
+from .utils import validAmount, validPercent, chageFormat, validNumber, log_errors_to_file, runtimelog
 from functools import partial
 
+@log_errors_to_file('out/errorlogs.txt')
 class UpdateSalary(customtkinter.CTkScrollableFrame):
     def __init__(self,master,connection, id = ''):
         super().__init__(master, label_text='Update Salary')
@@ -100,6 +101,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
                 'cgeis': ['CGEIS',self.cgeisEntry,self.cgeisLabel,12]
             }
 
+    @log_errors_to_file('out/errorlogs.txt')
     def cbEvent(self, idx):
         if self.params[idx][4].get():
             self.params[idx][1].grid(row = self.params[idx][3], column = 3, padx=(20, 20), pady=(10,0), sticky = "ew")
@@ -108,6 +110,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
             self.params[idx][1].grid_forget()
             self.params[idx][2].grid_forget()
 
+    @log_errors_to_file('out/errorlogs.txt')
     def paramRBEvent(self):
         if self.paramVar.get():
             self.basicLabel.grid_forget()
@@ -152,6 +155,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
             self.cgeisLabel.grid(row = 12, column = 2, padx=(20, 20), pady=(10,0), sticky = "ew")
             self.cgeisEntry.grid(row = 12, column = 3, padx=(20, 20), pady=(10,0), sticky = "ew")
 
+    @log_errors_to_file('out/errorlogs.txt')
     def fetchPersonalDetails(self,id):
         cur = self.con.cursor()
         res = cur.execute("SELECT * FROM Personal WHERE id = ?",
@@ -161,6 +165,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         flag = not row == None
         return row, flag
     
+    @log_errors_to_file('out/errorlogs.txt')
     def getResults(self):
         # Returns list of unique ids with string to display attached (id, string to display)
         # pass
@@ -185,6 +190,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         # print(res)
         return res
     
+    @log_errors_to_file('out/errorlogs.txt')
     def recordsRBEvent(self):
         if self.recordsVar.get():
             self.infoFrame = customtkinter.CTkScrollableFrame(self, height=self.height)
@@ -196,6 +202,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
             self.infoFrame.grid_forget()
             self.idEntry.destroy()
 
+    @log_errors_to_file('out/errorlogs.txt')
     def enterPressed(self,event):
         # print(1)
         rec = self.getResults()
@@ -210,6 +217,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
             self.idDict[r[0]] = (label, button)
             self.startRow+=1
 
+    @log_errors_to_file('out/errorlogs.txt')
     def deleteButtonClicked(self, i):
         self.height = max(0, self.height-50)
         self.infoFrame.configure(height = min(150,self.height))
@@ -217,6 +225,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         self.idDict[i][1].destroy()
         del self.idDict[i]
 
+    @log_errors_to_file('out/errorlogs.txt')
     def getFields(self):
         fields = []
         if self.paramVar.get():
@@ -228,12 +237,14 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
             
         return fields
 
+    @log_errors_to_file('out/errorlogs.txt')
     def allSelected(self, fields):
         if len(fields) == 7: return True
         if 'basic' in fields and 'da' in fields and 'tpt' in fields and 'hra' in fields and 'cgeis' in fields:
             return True
         return False
 
+    @log_errors_to_file('out/errorlogs.txt')
     def check(self, id):
         cur = self.con.cursor()
         res = cur.execute("SELECT * FROM Salary WHERE id = ? and date = ?",
@@ -244,6 +255,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
             return False
         else: return True
 
+    @log_errors_to_file('out/errorlogs.txt')
     def anyExists(self, id):
         cur = self.con.cursor()
         res = cur.execute("SELECT * FROM Salary WHERE id = ?",
@@ -254,6 +266,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
             return False
         else: return True
 
+    @log_errors_to_file('out/errorlogs.txt')
     def buildUpdateQuery(self, fields):
         query = 'UPDATE Salary SET '
         for i in range(len(fields)):
@@ -264,6 +277,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         query+= ' WHERE id = ? and date = ?'
         return query
 
+    @log_errors_to_file('out/errorlogs.txt')
     def getValues(self, fields):
         vals = []
         for f in fields:
@@ -275,6 +289,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
                 vals.append(self.params[f][1].get())
         return vals
     
+    @log_errors_to_file('out/errorlogs.txt')
     def fetchAllIds(self):
         cur = self.con.cursor()
         res = cur.execute("SELECT id FROM Personal")
@@ -283,11 +298,13 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         cur.close()
         return row
     
+    @log_errors_to_file('out/errorlogs.txt')
     def dbp(self):
         cur = self.con.cursor()
         res = cur.execute("SELECT * FROM Salary")
         row = res.fetchall()
     
+    @log_errors_to_file('out/errorlogs.txt')
     def getLatestData(self, id):
         cur = self.con.cursor()
         res = cur.execute('SELECT id, date, basic, da, tpt, gmc, indvc, cgeis, hra FROM Salary WHERE id = ? ORDER BY ABS(julianday(date)-julianday(?)) LIMIT 1', 
@@ -296,11 +313,13 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         cur.close()
         return list(res)
     
+    @log_errors_to_file('out/errorlogs.txt')
     def validationError(self, wdgt, msg):
         # self.editButtonClicked()
         wdgt.focus()
         messagebox.showerror('Input Error',  msg)
     
+    @log_errors_to_file('out/errorlogs.txt')
     def validate(self):
         # print(self.basicPay.get())
         if not self.paramVar.get():
@@ -343,6 +362,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
                 return False
         return True
     
+    @log_errors_to_file('out/errorlogs.txt')
     def nextButtonClicked(self):
         self.dbp()
         if self.validate():
@@ -366,6 +386,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
             self.msgLabel = customtkinter.CTkLabel(self, text="*Please Confirm the Details!", font=customtkinter.CTkFont(size=10, weight="bold"), anchor ='w',text_color='red')
             self.msgLabel.grid(row = 14, column = 1,columnspan = 4, padx=(20, 20), pady=(0,0), sticky = "ew")
 
+    @log_errors_to_file('out/errorlogs.txt')
     def editButtonClicked(self):
         self.submitButton.destroy()
         self.editButton.destroy()
@@ -385,6 +406,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         self.clearButton.grid(row=13, column=2, padx=(20, 20), pady=(20, 20), sticky="e")
         self.msgLabel.destroy()
 
+    @log_errors_to_file('out/errorlogs.txt')
     def clearButtonClicked(self):
         # self.basicEntry.delete(0,'end')
         # self.daEntry.delete(0,'end')
@@ -400,7 +422,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
         self.idDict = {}
         self.startRow = 0
 
-
+    @log_errors_to_file('out/errorlogs.txt')
     def submitButtonClicked(self):
         fields = list(self.getFields())
         cur = self.con.cursor()
@@ -451,6 +473,7 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
                         tuple(prev_vals)
                         )
                         # Log warnings here
+                        runtimelog(id)
                 else:
                     messagebox.showerror('Invalid Parameters', 'Please Select ALL parameters')
                     return

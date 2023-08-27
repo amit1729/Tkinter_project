@@ -1,9 +1,10 @@
 import customtkinter
 from tkinter import *
 from tkinter import messagebox
-from .utils import validDate, validNumber, chageFormat
+from .utils import validDate, validNumber, chageFormat, log_errors_to_file
 from functools import partial
 
+@log_errors_to_file('out/errorlogs.txt')
 class UpdatePersonal(customtkinter.CTkScrollableFrame):
     def __init__(self,master,connection):
         super().__init__(master, label_text='Update Personal Details')
@@ -17,12 +18,15 @@ class UpdatePersonal(customtkinter.CTkScrollableFrame):
         self.searchButton.grid(row=0, column=3, padx=(20, 20), pady=(20, 0), sticky="w")
         self.idEntry.bind('<Return>', command=self.enterPressed)
 
+    @log_errors_to_file('out/errorlogs.txt')
     def enterPressed(self,event):
         self.searchButtonClicked()
 
+    @log_errors_to_file('out/errorlogs.txt')
     def _ctsv(self,x):
         return StringVar(value=str(x))
     
+    @log_errors_to_file('out/errorlogs.txt')
     def fetchPersonalDetails(self):
         cur = self.con.cursor()
         res = cur.execute("SELECT * FROM Personal WHERE id = ?",
@@ -31,7 +35,8 @@ class UpdatePersonal(customtkinter.CTkScrollableFrame):
         cur.close()
         flag = not row == None
         return row, flag
-
+    
+    @log_errors_to_file('out/errorlogs.txt')
     def searchButtonClicked(self):
         data, exists = self.fetchPersonalDetails()
         if exists:
@@ -88,12 +93,13 @@ class UpdatePersonal(customtkinter.CTkScrollableFrame):
         else:
             messagebox.showerror('Error', f'Empolyee with serial number {self.idEntry.get()} does not exists')
 
+    @log_errors_to_file('out/errorlogs.txt')
     def validationError(self, wdgt, msg):
         # self.editButtonClicked()
         wdgt.focus()
         messagebox.showerror('Input Error',  msg)
 
-
+    @log_errors_to_file('out/errorlogs.txt')
     def validate(self, data):
         if not validNumber(data['id'][0]):
             self.validationError(data['id'][1], 'Please enter a valid employee ID')
@@ -121,6 +127,7 @@ class UpdatePersonal(customtkinter.CTkScrollableFrame):
             return False
         return True
 
+    @log_errors_to_file('out/errorlogs.txt')
     def nextButtonClicked(self):
         self.data = {}
         self.data['name'] = (self.nameEntry.get(), self.nameEntry)
@@ -152,7 +159,7 @@ class UpdatePersonal(customtkinter.CTkScrollableFrame):
             self.msgLabel.grid(row = 9, column = 1,columnspan = 4, padx=(20, 20), pady=(20,0), sticky = "ew")
             # messagebox.showinfo('Confirm Details', 'Please confirm the Employee Details')
 
-
+    @log_errors_to_file('out/errorlogs.txt')
     def editButtonClicked(self):
         self.submitButton.destroy()
         self.editButton.destroy()
@@ -171,6 +178,7 @@ class UpdatePersonal(customtkinter.CTkScrollableFrame):
         self.clearButton.grid(row=8, column=2, padx=(20, 20), pady=(20, 20), sticky="e")
         self.msgLabel.destroy()
 
+    @log_errors_to_file('out/errorlogs.txt')
     def clearButtonClicked(self):
         self.idEntry.delete(0,'end')
         self.nameEntry.delete(0,'end')
@@ -181,6 +189,7 @@ class UpdatePersonal(customtkinter.CTkScrollableFrame):
         self.doiEntry.delete(0,'end')
         self.pranEntry.delete(0,'end')
 
+    @log_errors_to_file('out/errorlogs.txt')
     def submitButtonClicked(self):
         cur = self.con.cursor()
         cur.execute("UPDATE Personal SET name = ?, rank = ?, postedat = ?, citycode = ?, doj = ?, doi = ?, pran = ? WHERE id = ?",
