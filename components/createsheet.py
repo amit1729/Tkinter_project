@@ -267,9 +267,9 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
                     hpla=round(((basicPay+da)*3)/self.hpld,0)
                     self.eold=num_days
                     eola=round(((basicPay+da)*5)/self.eold,0)
-                    daontpt=(da*tpt)/100.0
-                    gmconbpda=round((gmc*(basicPay+da))/100.0,0)
-                    indlc=round((indvc*(basicPay+da))/100.0,0)
+                    daontpt=round((da*tpt)/100.0)
+                    gmconbpda=round((gmc*(basicPay+da))/100.0)
+                    indlc=round((indvc*(basicPay+da))/100.0)
                     grossenwithoutgmc=basicPay+da+tpt+hra       # 3,5,6,8
                     grossen=basicPay+da+tpt+hra+gmconbpda       # 3,5,6,8,12
                     totded=cgeis+gmconbpda+indlc+hpla+eola      # 12,15,17,22,24
@@ -282,10 +282,10 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
                             f'{per_data[2]}\n{per_data[4]}\n{per_data[5]}\n{per_data[6]}',
                             basicPay,
                             da,
-                            self.calPercent(basicPay,da),
+                            round(self.calPercent(basicPay,da)),
                             tpt,
                             daontpt,         
-                            hra,
+                            round(self.calPercent(basicPay,hra)),
                             '',                #wa
                             '',                #Extra claim
                             grossenwithoutgmc,            
@@ -406,23 +406,26 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
                         self.ele.insert(END,rec)
                         self.disable(self.ele)
                         elements.append(self.ele)
+                    elif i in [9,10,16,18,19,20,21,23]:
+                        self.ele = customtkinter.CTkEntry(master=self.tableFrame,placeholder_text="0",corner_radius=0,font=customtkinter.CTkFont(size=12))
+                        self.ele.grid(row=self.index+4, column=i, sticky="nsew")
+                        if(not(rec=="")):
+                            self.ele.insert(END,rec)
+                        self.ele.configure(state=NORMAL)
+                        self.ele.bind('<Return>', command=partial(self.updateButtonClicked, ind))
+                        self.ele.bind('<FocusOut>', partial(self.updateButtonClicked, ind))
+                        elements.append(self.ele)
                     else:
                         self.ele = customtkinter.CTkEntry(master=self.tableFrame,placeholder_text="0",corner_radius=0,font=customtkinter.CTkFont(size=12))
                         self.ele.grid(row=self.index+4, column=i, sticky="nsew")
                         if(not(rec=="")):
                             self.ele.insert(END,rec)
                         self.ele.configure(state=NORMAL)
-                        if i not in [9,10,16,18,19,20,21,23]:
-                            self.disable(self.ele)
+                        self.disable(self.ele)
                         elements.append(self.ele)
                 
-
-                self.updateButton = customtkinter.CTkButton(master=self.tableFrame, fg_color="transparent", border_width=2,hover_color='green', text_color=("gray10", "#DCE4EE"), text='Update', command=partial(self.updateButtonClicked, ind),font=customtkinter.CTkFont(size=12, weight='bold'))
-                self.updateButton.grid(row=self.index+4, column=i+1, padx=(5, 5),pady = (5,5), sticky="nsew")
-                elements.append(self.updateButton)
-                
                 self.deleteButton = customtkinter.CTkButton(master=self.tableFrame, fg_color="transparent", border_width=2,hover_color='red', text_color=("gray10", "#DCE4EE"), text='Remove', command=partial(self.deleteButtonClicked, ind),font=customtkinter.CTkFont(size=12, weight='bold'))
-                self.deleteButton.grid(row=self.index+4, column=i+2, padx=(5, 5),pady = (5,5), sticky="nsew")
+                self.deleteButton.grid(row=self.index+4, column=i+1, padx=(5, 5),pady = (5,5), sticky="nsew")
                 elements.append(self.deleteButton)
                 self.entries[ind] = [elements, record]
                 self.entryIds[ind] = record
@@ -432,7 +435,7 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
 
 
    
-    def updateButtonClicked(self, i):
+    def updateButtonClicked(self,i,event):
         old_data=[0,0,0,0,0,0,0,0]
         old_data_ind=0
         for j in [9,10,16,18,19,20,21,23]:

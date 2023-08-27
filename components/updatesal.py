@@ -456,5 +456,5 @@ class UpdateSalary(customtkinter.CTkScrollableFrame):
                     return
         self.con.commit()
         cur.close()
-        messagebox.showerror('Success', 'Records Updated successfully')
+        messagebox.showinfo('Success', 'Records Updated successfully')
         self.editButtonClicked()
