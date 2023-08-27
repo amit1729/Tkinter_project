@@ -263,10 +263,10 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
                     month=int(salData[1][5:7])
                     year=int(salData[1][0:4])
                     num_days=calendar.monthrange(year, month)[1]
-                    hpld=num_days
-                    hpla=round(((basicPay+da)*3)/hpld,0)
-                    eold=num_days
-                    eola=round(((basicPay+da)*5)/eold,0)
+                    self.hpld=num_days
+                    hpla=round(((basicPay+da)*3)/self.hpld,0)
+                    self.eold=num_days
+                    eola=round(((basicPay+da)*5)/self.eold,0)
                     daontpt=(da*tpt)/100.0
                     gmconbpda=round((gmc*(basicPay+da))/100.0,0)
                     indlc=round((indvc*(basicPay+da))/100.0,0)
@@ -298,9 +298,9 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
                             '',                #licence
                             '',                #other deduction
                             '',                #income tax
-                            hpld,
+                            self.hpld,
                             hpla,
-                            eold,
+                            self.eold,
                             eola,
                             totded,           
                             amtpay,             
@@ -409,15 +409,11 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
                     else:
                         self.ele = customtkinter.CTkEntry(master=self.tableFrame,placeholder_text="0",corner_radius=0,font=customtkinter.CTkFont(size=12))
                         self.ele.grid(row=self.index+4, column=i, sticky="nsew")
-                        
                         if(not(rec=="")):
                             self.ele.insert(END,rec)
-                        
                         self.ele.configure(state=NORMAL)
-
-                        if i not in [9,10,16,18,19,20]:
+                        if i not in [9,10,16,18,19,20,21,23]:
                             self.disable(self.ele)
-
                         elements.append(self.ele)
                 
 
@@ -437,25 +433,34 @@ class CreateSheet(customtkinter.CTkScrollableFrame):
 
    
     def updateButtonClicked(self, i):
-        old_data=[0,0,0,0,0,0]
+        old_data=[0,0,0,0,0,0,0,0]
         old_data_ind=0
-        for j in [9,10,16,18,19,20]:
+        for j in [9,10,16,18,19,20,21,23]:
             k1=self.entries[i][0][j].get()
+            if(j==21 or j==23):
+                if(int(k1)>self.hpld):
+                    self.entries[i][0][j].delete(0,END)
+                    self.entries[i][0][j].insert(END,self.entries[i][1][j])
+                    messagebox.showerror('Error', 'Number of days are greater than total days in month')
+                    return
             if(not (self.entries[i][1][j] ==  "" )):
                 old_data[old_data_ind]=self.entries[i][1][j]
+            if(j in [21,23]):
+                old_data[old_data_ind]=self.entries[i][1][j+1]
             if(self.entries[i][0][j].get()!=""):
                 k1=float(k1)
                 self.entries[i][1][j]=k1
             if(self.entries[i][1][j]==""):
                 self.entries[i][1][j]=float(0.0)
             old_data_ind=old_data_ind+1
-
+        self.entries[i][1][22]=round(((self.entries[i][1][3]+self.entries[i][1][5])*3)/self.entries[i][1][21],0)
+        self.entries[i][1][24]=round(((self.entries[i][1][3]+self.entries[i][1][5])*5)/self.entries[i][1][23],0)
         self.entries[i][1][11]=self.entries[i][1][3]+self.entries[i][1][5]+self.entries[i][1][6]+self.entries[i][1][8]+self.entries[i][1][9]+self.entries[i][1][10]-old_data[0]-old_data[1]
         self.entries[i][1][13]=self.entries[i][1][3]+self.entries[i][1][5]+self.entries[i][1][6]+self.entries[i][1][8]+self.entries[i][1][12]+self.entries[i][1][9]+self.entries[i][1][10]-old_data[0]-old_data[1]
-        self.entries[i][1][25]=self.entries[i][1][12]+self.entries[i][1][15]+self.entries[i][1][17]+self.entries[i][1][22]+self.entries[i][1][24]+self.entries[i][1][16]+self.entries[i][1][18]+self.entries[i][1][19]+self.entries[i][1][20]-old_data[2]-old_data[3]-old_data[4]-old_data[5]
+        self.entries[i][1][25]=self.entries[i][1][12]+self.entries[i][1][15]+self.entries[i][1][17]+self.entries[i][1][22]+self.entries[i][1][24]+self.entries[i][1][16]+self.entries[i][1][18]+self.entries[i][1][19]+self.entries[i][1][20]+self.entries[i][1][22]+self.entries[i][1][24]-old_data[2]-old_data[3]-old_data[4]-old_data[5]-old_data[6]-old_data[7]
         self.entries[i][1][26]=self.entries[i][1][13]-self.entries[i][1][25]
 
-        for j in [11,13,25,26]:
+        for j in [11,13,22,24,25,26]:
             self.entries[i][0][j].configure(state=NORMAL)
             self.entries[i][0][j].delete(0,END)
             self.entries[i][0][j].insert(END,self.entries[i][1][j])
